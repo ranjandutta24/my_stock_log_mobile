@@ -22,16 +22,17 @@ class Landing extends StatelessWidget {
           children: [
             Text('Welcome ' + data['name']),
             ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (ctx) => StockLog(
-                        token: token,
-                      ),
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (ctx) => StockLog(
+                      token: token,
                     ),
-                  );
-                },
-                child: Text('Stock Log'))
+                  ),
+                );
+              },
+              child: Text('Stock Log'),
+            )
           ],
         ),
       ),

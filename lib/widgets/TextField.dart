@@ -78,11 +78,12 @@ class _CustomPasswardFieldState extends State<CustomPasswardField> {
       controller: widget.controller,
       validator: (value) {
         if (value!.isEmpty) {
-          return 'Please enter your UserId';
+          return 'Please enter your Password';
         }
         // You can add more validation logic here if needed
         return null;
       },
+      style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
         focusedBorder: OutlineInputBorder(
           borderSide:

@@ -27,6 +27,11 @@ void main() {
       ),
     ),
     theme: ThemeData().copyWith(
+      inputDecorationTheme: InputDecorationTheme(
+        errorStyle: TextStyle(
+          color: Color.fromARGB(255, 117, 5, 5),
+        ),
+      ),
       useMaterial3: true,
       colorScheme: kColorScheme,
       appBarTheme: const AppBarTheme().copyWith(

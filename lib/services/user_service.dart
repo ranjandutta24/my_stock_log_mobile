@@ -20,8 +20,6 @@ userlogin(body) async {
       ),
       action: SnackBarAction(label: '', onPressed: () {}),
     );
-    // Handle any errors that occurred during the API call
-    // print('Error: $error');
   }
 }
 
@@ -50,6 +48,25 @@ getStock(body) async {
       Uri.parse('https://busy-bee-poncho.cyclic.app/api//stocks'),
       headers: {'Content-Type': 'application/json', 'x-auth-token': body},
     );
+  } catch (error) {
+    SnackBar(
+      duration: const Duration(seconds: 3),
+      content: const Center(
+        child: Text('api call error'),
+      ),
+      action: SnackBarAction(label: '', onPressed: () {}),
+    );
+  }
+}
+
+addStock(body) async {
+  try {
+    return await http.post(
+        Uri.parse('https://busy-bee-poncho.cyclic.app/api//auth'),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: body);
   } catch (error) {
     SnackBar(
       duration: const Duration(seconds: 3),

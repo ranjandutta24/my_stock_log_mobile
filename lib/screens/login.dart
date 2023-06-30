@@ -27,10 +27,15 @@ class _LoginState extends State<Login> {
     super.dispose();
   }
 
+  var loading = false;
+
   login() async {
+    setState(() {
+      loading = true;
+    });
     var response = await userlogin(
       json.encode(
-        {'email': userId.text, 'password': passward.text},
+        {'email': userId.text.trim(), 'password': passward.text},
       ),
     );
     if (response.statusCode == 200) {
@@ -50,6 +55,9 @@ class _LoginState extends State<Login> {
     } else {
       print(response.body);
     }
+    setState(() {
+      loading = false;
+    });
   }
 
   @override
@@ -90,21 +98,28 @@ class _LoginState extends State<Login> {
                   const SizedBox(
                     height: 14,
                   ),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 50,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        login();
-                        // print(passward.text);
-                      },
-                      child: const Text(
-                        'Log In',
-                        style:
-                            TextStyle(color: Color.fromARGB(255, 42, 125, 219)),
-                      ),
-                    ),
-                  ),
+                  loading
+                      ? const SizedBox(
+                          height: 50,
+                          width: 50,
+                          child: CircularProgressIndicator())
+                      : SizedBox(
+                          width: double.infinity,
+                          height: 50,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                login();
+                              }
+                              // print(passward.text);
+                            },
+                            child: const Text(
+                              'Log In',
+                              style: TextStyle(
+                                  color: Color.fromARGB(255, 42, 125, 219)),
+                            ),
+                          ),
+                        ),
                 ],
               ),
             ),
