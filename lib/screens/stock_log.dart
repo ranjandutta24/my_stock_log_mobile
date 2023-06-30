@@ -7,7 +7,7 @@ import 'package:my_stock_log/widgets/log_inkwell.dart';
 
 class StockLog extends StatefulWidget {
   const StockLog({super.key, required this.token});
-  final token;
+  final String token;
 
   @override
   State<StockLog> createState() => _StockLogState();
@@ -20,27 +20,29 @@ class _StockLogState extends State<StockLog> {
     getAllStock();
   }
 
-  dynamic stockList = [];
+  List stockList = [];
+  List<String> stockName = [];
   bool show = false;
   getAllStock() async {
-    print('call');
     var response = await getStock(widget.token);
     if (response.statusCode == 200) {
-      print(stockList);
       setState(() {
         stockList = json.decode(response.body);
         show = true;
       });
-    } else {
-      print(response.body);
-    }
+      stockName = stockList.map((item) => item['name'].toString()).toList();
+      print(stockName);
+    } else {}
   }
 
   void _addItem() async {
     // final newItem = await Navigator.of(context).push<GroceryItem>(
     final newItem = await Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (ctx) => const NewItem(),
+        builder: (ctx) => NewItem(
+          token: widget.token,
+          name: stockName,
+        ),
       ),
     );
 

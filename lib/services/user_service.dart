@@ -59,21 +59,9 @@ getStock(body) async {
   }
 }
 
-addStock(body) async {
-  try {
-    return await http.post(
-        Uri.parse('https://busy-bee-poncho.cyclic.app/api//auth'),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: body);
-  } catch (error) {
-    SnackBar(
-      duration: const Duration(seconds: 3),
-      content: const Center(
-        child: Text('api call error'),
-      ),
-      action: SnackBarAction(label: '', onPressed: () {}),
-    );
-  }
+addStock(body, token) async {
+  return await http.post(
+      Uri.parse('https://busy-bee-poncho.cyclic.app/api//stocks/'),
+      headers: {'Content-Type': 'application/json', 'x-auth-token': token},
+      body: body);
 }
