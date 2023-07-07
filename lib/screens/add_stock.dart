@@ -23,6 +23,7 @@ class _NewItemState extends State<NewItem> {
   var _enteredPrice = 0;
   DateTime? _selectedDate;
   String _selectedValue = 'Buy';
+  var newStock = {};
 
   var _isSending = false;
   void _presentDatePicker() async {
@@ -44,34 +45,68 @@ class _NewItemState extends State<NewItem> {
   late String selectedOption;
 
   void _saveItem() async {
-    if (_formKey.currentState!.validate()) {
+    if (_formKey.currentState!.validate() && _selectedDate != null) {
       _formKey.currentState!.save();
-      // setState(() {
-      //   _isSending = true;
-      // });
-
-      final response = await addStock(
-          json.encode({
-            "name": _enteredName,
-            "price": _enteredPrice,
-            "quantity": _enteredQuantity,
-            "date": _selectedDate.toString(),
-            "status": _selectedValue
-          }),
-          widget.token);
-
-      print(response.body);
-      // final Map<dynamic, dynamic> resData = json.decode(response.body);
+      setState(() {
+        _isSending = true;
+      });
+      try {
+        final response = await addStock(
+            json.encode({
+              "name": _enteredName,
+              "price": _enteredPrice,
+              "quantity": _enteredQuantity,
+              "date": _selectedDate.toString(),
+              "status": _selectedValue
+            }),
+            widget.token);
+        if (response.statusCode == 200) {
+          print(response.body);
+          newStock = json.decode(response.body);
+        } else {
+          ScaffoldMessenger.of(context).clearSnackBars();
+          // ignore: use_build_context_synchronously
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              duration: const Duration(seconds: 3),
+              content: Center(
+                child: Text(response.body),
+              ),
+              action: SnackBarAction(label: '', onPressed: () {}),
+            ),
+          );
+          return;
+        }
+      } catch (error) {
+        ScaffoldMessenger.of(context).clearSnackBars();
+        // ignore: use_build_context_synchronously
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            duration: const Duration(seconds: 3),
+            content: const Center(
+              child: Text('Failed. Please try again later.'),
+            ),
+            action: SnackBarAction(label: '', onPressed: () {}),
+          ),
+        );
+        return;
+      }
 
       if (!context.mounted) {
         return;
       }
-      Navigator.of(context).pop(
+      setState(() {
+        _isSending = true;
+      });
+
+      Navigator.of(context).pop(newStock
+
           // GroceryItem(
           //     id: resData['name'],
           //     name: _enteredName,
           //     quantity: _enteredQuantity,
           //     category: _selectedCategory),
+
           );
 
       // Navigator.of(context).pop(
@@ -81,6 +116,22 @@ class _NewItemState extends State<NewItem> {
       //       quantity: _enteredQuantity,
       //       category: _selectedCategory),
       // );
+    } else {
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: const Text('Invalid input'),
+          content: const Text('Please make sure valid Inputs'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(ctx);
+              },
+              child: const Text('okay'),
+            ),
+          ],
+        ),
+      );
     }
   }
 
@@ -103,24 +154,65 @@ class _NewItemState extends State<NewItem> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                TextFormField(
-                  maxLength: 50,
-                  decoration: const InputDecoration(
-                    label: Text('Name'),
-                  ),
-                  validator: (value) {
-                    if (value == null ||
-                        value.isEmpty ||
-                        value.trim().length == 1 ||
-                        value.trim().length > 50) {
-                      return 'Must be between 1 and 50 characters.';
-                    }
-                    return null;
-                  },
-                  onSaved: (value) {
-                    _enteredName = value!;
-                  },
-                ), // instead of TextField()
+                Row(
+                  children: [
+                    Expanded(
+                      child: Autocomplete<String>(
+                        optionsBuilder: (TextEditingValue textEditingValue) {
+                          if (textEditingValue.text.isEmpty) {
+                            return const Iterable<String>.empty();
+                          }
+                          return options.where((option) => option
+                              .toLowerCase()
+                              .contains(textEditingValue.text.toLowerCase()));
+                        },
+                        onSelected: (String value) {
+                          setState(() {
+                            selectedOption = value;
+                          });
+                        },
+                        fieldViewBuilder: (BuildContext context,
+                            TextEditingController textEditingController,
+                            FocusNode focusNode,
+                            VoidCallback onFieldSubmitted) {
+                          return TextFormField(
+                            validator: (value) {
+                              if (value == null ||
+                                  value.isEmpty ||
+                                  value.trim().length == 1 ||
+                                  value.trim().length > 50) {
+                                return 'Must be between 1 and 50 characters.';
+                              }
+                              return null;
+                            },
+                            onSaved: (value) {
+                              _enteredName = value!;
+                            },
+                            maxLength: 50,
+                            controller: textEditingController,
+                            focusNode: focusNode,
+                            onFieldSubmitted: (value) {
+                              onFieldSubmitted();
+                            },
+                            decoration: const InputDecoration(
+                              label: Text('Stock Name'),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Text(_selectedDate == null
+                        ? 'No Date Selected'
+                        : formatter.format(_selectedDate!)),
+                    IconButton(
+                        onPressed: _presentDatePicker,
+                        icon: const Icon(Icons.calendar_month))
+                  ],
+                ),
+                // instead of TextField()
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
@@ -172,40 +264,32 @@ class _NewItemState extends State<NewItem> {
                 const SizedBox(
                   height: 12,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(_selectedDate == null
-                        ? 'No Date Selected'
-                        : formatter.format(_selectedDate!)),
-                    IconButton(
-                        onPressed: _presentDatePicker,
-                        icon: const Icon(Icons.calendar_month))
-                  ],
-                ),
 
-                Column(
+                Row(
                   children: [
-                    RadioListTile<String>(
-                      title: Text('Buy'),
-                      value: 'Buy',
-                      groupValue: _selectedValue,
-                      onChanged: (value) {
-                        setState(() {
-                          _selectedValue = value!;
-                        });
-                      },
+                    Expanded(
+                      child: RadioListTile<String>(
+                        title: Text('Buy'),
+                        value: 'Buy',
+                        groupValue: _selectedValue,
+                        onChanged: (value) {
+                          setState(() {
+                            _selectedValue = value!;
+                          });
+                        },
+                      ),
                     ),
-                    RadioListTile<String>(
-                      title: Text('Sell'),
-                      value: 'Sell',
-                      groupValue: _selectedValue,
-                      onChanged: (value) {
-                        setState(() {
-                          _selectedValue = value!;
-                        });
-                      },
+                    Expanded(
+                      child: RadioListTile<String>(
+                        title: Text('Sell'),
+                        value: 'Sell',
+                        groupValue: _selectedValue,
+                        onChanged: (value) {
+                          setState(() {
+                            _selectedValue = value!;
+                          });
+                        },
+                      ),
                     ),
                   ],
                 ),
@@ -233,50 +317,6 @@ class _NewItemState extends State<NewItem> {
                     )
                   ],
                 ),
-                Autocomplete<String>(
-                  optionsBuilder: (TextEditingValue textEditingValue) {
-                    if (textEditingValue.text.isEmpty) {
-                      return const Iterable<String>.empty();
-                    }
-                    return options.where(
-                        (option) => option.contains(textEditingValue.text));
-                  },
-                  onSelected: (String value) {
-                    setState(() {
-                      selectedOption = value;
-                    });
-                  },
-                  fieldViewBuilder: (BuildContext context,
-                      TextEditingController textEditingController,
-                      FocusNode focusNode,
-                      VoidCallback onFieldSubmitted) {
-                    return TextFormField(
-                      controller: textEditingController,
-                      focusNode: focusNode,
-                      onFieldSubmitted: (value) {
-                        onFieldSubmitted();
-                      },
-                      decoration: InputDecoration(
-                        labelText: 'Select an option',
-                      ),
-                    );
-                  },
-
-                  //             optionsViewBuilder: (BuildContext context, AutocompleteOnSelected<String> onSelected) {
-                  //   return ListView.builder(
-                  //     itemCount: options.length,
-                  //     itemBuilder: (BuildContext context, int index) {
-                  //       final String option = options[index];
-                  //       return ListTile(
-                  //         title: Text(option),
-                  //         onTap: () {
-                  //           onSelected(option);
-                  //         },
-                  //       );
-                  //     },
-                  //   );
-                  // },
-                )
               ],
             ),
           ),

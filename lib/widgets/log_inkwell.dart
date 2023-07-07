@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:my_stock_log/screens/stock_detail.dart';
 
 final formatter = DateFormat.yMd();
 
@@ -9,9 +10,11 @@ class StockInkwell extends StatefulWidget {
   const StockInkwell({
     Key? key,
     required this.stock,
+    required this.token,
   }) : super(key: key);
 
   final stock;
+  final token;
 
   @override
   // ignore: library_private_types_in_public_api
@@ -27,7 +30,17 @@ class _StockInkwellState extends State<StockInkwell> {
           height: 14,
         ),
         InkWell(
-          onTap: () {},
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (ctx) => StockDetail(
+                  stock: widget.stock,
+                  token: widget.token,
+                ),
+              ),
+            );
+          },
+
           splashColor: const Color.fromARGB(255, 178, 178, 178),
           // borderRadius: BorderRadius.circular(16),
           child: Container(
@@ -78,11 +91,14 @@ class _StockInkwellState extends State<StockInkwell> {
                     const SizedBox(
                       width: 14,
                     ),
-                    Text(
-                      formatter.format(DateTime.parse(widget.stock['date'])),
-                      style: const TextStyle(
-                          color: Color.fromARGB(255, 68, 68, 68)),
-                    ),
+                    widget.stock['date'] == null ? Text('') : Text('')
+                    // : Text(
+                    //     formatter.format(
+                    //       DateTime.parse(widget.stock['date']),
+                    //     ),
+                    //     style: const TextStyle(
+                    //         color: Color.fromARGB(255, 68, 68, 68)),
+                    //   ),
                   ],
                 ),
               ],

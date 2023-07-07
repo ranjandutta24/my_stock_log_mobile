@@ -33,31 +33,59 @@ class _LoginState extends State<Login> {
     setState(() {
       loading = true;
     });
-    var response = await userlogin(
-      json.encode(
-        {'email': userId.text.trim(), 'password': passward.text},
-      ),
-    );
-    if (response.statusCode == 200) {
-      var token = json.decode(response.body);
-      print(token);
 
-      var response1 = await me(token['jwttoken']);
-      if (response1.statusCode == 200) {
-        print(response1.body);
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (ctx) => Landing(
-                data: json.decode(response1.body), token: token['jwttoken']),
+    try {
+      var response = await userlogin(
+        json.encode(
+          {'email': userId.text.trim(), 'password': passward.text},
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        var token = json.decode(response.body);
+        var response1 = await me(token['jwttoken']);
+        if (response1.statusCode == 200) {
+          // ignore: use_build_context_synchronously
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (ctx) => Landing(
+                  data: json.decode(response1.body), token: token['jwttoken']),
+            ),
+          );
+        }
+      } else {
+        // ignore: use_build_context_synchronously
+        ScaffoldMessenger.of(context).clearSnackBars();
+        // ignore: use_build_context_synchronously
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            duration: const Duration(seconds: 3),
+            content: Center(
+              child: Text(response.body),
+            ),
+            action: SnackBarAction(label: '', onPressed: () {}),
           ),
         );
       }
-    } else {
-      print(response.body);
+      setState(() {
+        loading = false;
+      });
+    } catch (error) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          duration: const Duration(seconds: 3),
+          content: const Center(
+            child: Text('Login Failed. Please try again later.'),
+          ),
+          action: SnackBarAction(label: '', onPressed: () {}),
+        ),
+      );
+      setState(() {
+        loading = false;
+      });
     }
-    setState(() {
-      loading = false;
-    });
   }
 
   @override

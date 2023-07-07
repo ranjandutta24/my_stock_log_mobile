@@ -6,33 +6,6 @@ import 'package:flutter/material.dart';
 
 var baseURL = 'https://busy-bee-poncho.cyclic.app/api/';
 
-userlogin(body) async {
-  return await http.post(Uri.parse('$baseURL/auth'),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: body);
-}
-
-// /users/me
-
-me(body) async {
-  try {
-    return await http.get(
-      Uri.parse('$baseURL/users/me'),
-      headers: {'Content-Type': 'application/json', 'x-auth-token': body},
-    );
-  } catch (error) {
-    SnackBar(
-      duration: const Duration(seconds: 3),
-      content: const Center(
-        child: Text('api call error'),
-      ),
-      action: SnackBarAction(label: '', onPressed: () {}),
-    );
-  }
-}
-
 getStock(body) async {
   try {
     return await http.get(
@@ -54,4 +27,11 @@ addStock(body, token) async {
   return await http.post(Uri.parse('$baseURL/stocks/'),
       headers: {'Content-Type': 'application/json', 'x-auth-token': token},
       body: body);
+}
+
+deleteStock(id, token) async {
+  return await http.delete(
+    Uri.parse('$baseURL/stocks/$id'),
+    headers: {'Content-Type': 'application/json', 'x-auth-token': token},
+  );
 }

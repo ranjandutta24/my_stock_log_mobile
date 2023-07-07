@@ -45,13 +45,14 @@ class _StockLogState extends State<StockLog> {
         ),
       ),
     );
+    print(newItem);
 
     if (newItem == null) {
       return;
     }
 
     setState(() {
-      // _groceryItems.add(newItem);
+      stockList.add(newItem);
     });
   }
 
@@ -76,7 +77,10 @@ class _StockLogState extends State<StockLog> {
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Column(children: [
                     for (final Map stock in stockList)
-                      StockInkwell(stock: stock),
+                      StockInkwell(
+                        stock: stock,
+                        token: widget.token,
+                      ),
                     const SizedBox(
                       height: 14,
                     )
