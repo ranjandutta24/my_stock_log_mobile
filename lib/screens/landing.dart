@@ -1,6 +1,6 @@
 // import 'dart:convert';
 
-import 'package:fl_chart/fl_chart.dart';
+// import 'package:fl_chart/fl_chart.dart';s
 import 'package:flutter/material.dart';
 import 'package:my_stock_log/screens/chart.dart';
 import 'package:my_stock_log/screens/demo.dart';
@@ -36,7 +36,7 @@ class _LandingState extends State<Landing> {
     // var activePageTitle = "Categories";
 
     if (_selectedPageIndex == 1) {
-      activePage = ChartScreen();
+      activePage = ChartScreen(token: widget.token);
       // activePageTitle = "Favorites";
     }
     return SafeArea(

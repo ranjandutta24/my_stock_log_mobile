@@ -91,14 +91,13 @@ class _StockInkwellState extends State<StockInkwell> {
                     const SizedBox(
                       width: 14,
                     ),
-                    widget.stock['date'] == null ? Text('') : Text('')
-                    // : Text(
-                    //     formatter.format(
-                    //       DateTime.parse(widget.stock['date']),
-                    //     ),
-                    //     style: const TextStyle(
-                    //         color: Color.fromARGB(255, 68, 68, 68)),
-                    //   ),
+                    Text(
+                      formatter.format(
+                        DateTime.parse(widget.stock['date']),
+                      ),
+                      style: const TextStyle(
+                          color: Color.fromARGB(255, 68, 68, 68)),
+                    ),
                   ],
                 ),
               ],
