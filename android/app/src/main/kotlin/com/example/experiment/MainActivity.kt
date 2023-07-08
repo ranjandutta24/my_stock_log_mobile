@@ -1,4 +1,4 @@
-package com.example.my_stock_log
+package com.example.experiment
 
 import io.flutter.embedding.android.FlutterActivity
 

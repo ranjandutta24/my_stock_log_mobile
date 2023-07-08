@@ -1,14 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:my_stock_log/screens/demo.dart';
-import 'package:my_stock_log/services/stock_service.dart';
-import 'dart:math' as math;
 
-import 'package:flutter/material.dart';
-// import 'package:pie_chart/pie_chart.dart';
+import 'package:my_stock_log/services/stock_service.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:syncfusion_flutter_charts/sparkcharts.dart';
+// import 'package:syncfusion_flutter_charts/charts.dart';
+// import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
 class ChartScreen extends StatefulWidget {
   const ChartScreen({super.key, required this.token});
@@ -79,26 +76,6 @@ class _ChartScreenState extends State<ChartScreen> {
     getAllStock();
   }
 
-  final dataMap1 = <String, double>{
-    "Flutter": 5881,
-    "sd": 5000,
-    "ss": 5000,
-  };
-
-  final colorList = <Color>[
-    Colors.greenAccent,
-    const Color.fromARGB(255, 240, 121, 105),
-    const Color.fromARGB(255, 107, 105, 240),
-    const Color.fromARGB(250, 159, 105, 240),
-    const Color.fromARGB(255, 240, 105, 186),
-    const Color.fromARGB(255, 202, 28, 28),
-    const Color.fromARGB(255, 9, 177, 74),
-    const Color.fromARGB(255, 218, 230, 47),
-    const Color.fromARGB(255, 16, 194, 222),
-    Color.fromARGB(255, 116, 116, 116),
-    Color.fromARGB(255, 101, 69, 29),
-    Color.fromARGB(255, 0, 58, 31),
-  ];
   List<_PieData> pieData = [
     _PieData('X Value', 10, '10%'),
     _PieData('xed Value1', 20, '20%'),
@@ -131,43 +108,7 @@ class _ChartScreenState extends State<ChartScreen> {
             ])),
       ),
     );
-
-    // return pieChart();
-    // return show == true
-    //     ? Container(
-    //         padding: const EdgeInsets.symmetric(horizontal: 16),
-    //         child: PieChart(
-    //           chartType: ChartType.disc,
-    //           chartRadius: 500,
-    //           legendOptions: const LegendOptions(
-    //             // showLegendsInRow: _showLegendsInRow,
-    //             legendPosition: LegendPosition.bottom,
-    //             showLegends: false,
-    //             // legendShape: _legendShape == LegendShape.circle
-    //             // ? BoxShape.circle
-    //             // : BoxShape.rectangle,
-    //             legendTextStyle: TextStyle(
-    //               fontWeight: FontWeight.bold,
-    //             ),
-    //           ),
-    //           dataMap: dataMap,
-    //           baseChartColor: Colors.grey[50]!.withOpacity(0.15),
-    //           colorList: colorList,
-    //           chartValuesOptions: const ChartValuesOptions(
-    //               showChartValuesInPercentage: true,
-    //               showChartValuesOutside: true),
-    //           totalValue: totalV,
-    //         ),
-    //       )
-    //     : const Text('');
   }
-}
-
-class _SalesData {
-  _SalesData(this.year, this.sales);
-
-  final String year;
-  final double sales;
 }
 
 class _PieData {
