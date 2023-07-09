@@ -19,6 +19,7 @@ class _ChartScreenState extends State<ChartScreen> {
   var totalV;
   var show = false;
   Map<String, double> dataMap = {};
+  List<_PieData> listStocks = [];
   getAllStock() async {
     var response = await getStock(widget.token);
     if (response.statusCode == 200) {
@@ -36,16 +37,12 @@ class _ChartScreenState extends State<ChartScreen> {
           (el['status'] == 'Sell' ? -el['total'] : el['total']);
     });
     totalV = total;
-    totalV = 0;
-
-    print(totalV);
     return total;
   }
 
   returnMap(main) {
     List<dynamic> chartSet =
         List.from(main.map((item) => item['name']).toSet());
-    print(chartSet);
 
     List<dynamic> series = [];
     for (int i = 0; i < chartSet.length; i++) {
@@ -55,16 +52,14 @@ class _ChartScreenState extends State<ChartScreen> {
               accumulator +
               (el['status'] == 'Sell' ? -el['total'] : el['total'])));
     }
-    print(series);
+
     for (int i = 0; i < series.length; i++) {
       if (series[i] > 0) {
-        // dataMap[chartSet[i]] = series[i].toDouble();
-        dataMap[chartSet[i] + " " + series[i].toString()] =
-            series[i].toDouble();
-        totalV = totalV + series[i];
+        listStocks.add(_PieData(chartSet[i], series[i],
+            "${series[i].toStringAsFixed(0)} (${((series[i] / totalV) * 100).toStringAsFixed(1)}%)"));
       }
     }
-    print(dataMap);
+
     setState(() {
       show = true;
     });
@@ -77,7 +72,7 @@ class _ChartScreenState extends State<ChartScreen> {
   }
 
   List<_PieData> pieData = [
-    _PieData('X Value', 10, '10%'),
+    _PieData('X Value', 10, '10% '),
     _PieData('xed Value1', 20, '20%'),
     _PieData('xed Value2', 25, '25%'),
     _PieData('xed Value3', 15, '15%'),
@@ -91,22 +86,26 @@ class _ChartScreenState extends State<ChartScreen> {
     return SafeArea(
       child: Scaffold(
         body: Center(
-          child: SfCircularChart(
-            title: ChartTitle(text: 'Sales by sales person'),
-            legend: Legend(isVisible: true),
-            series: <PieSeries<_PieData, String>>[
-              PieSeries<_PieData, String>(
-                  explodeOffset: '5',
-                  animationDuration: 900,
-                  explode: true,
-                  explodeIndex: 0,
-                  dataSource: pieData,
-                  xValueMapper: (_PieData data, _) => data.xData,
-                  yValueMapper: (_PieData data, _) => data.yData,
-                  dataLabelMapper: (_PieData data, _) => data.text,
-                  dataLabelSettings: DataLabelSettings(isVisible: true)),
-            ],
-          ),
+          child: show == true
+              ? SfCircularChart(
+                  title: ChartTitle(
+                      text: totalV.toStringAsFixed(2).toString() + "₹"),
+                  legend: Legend(isVisible: true),
+                  series: <PieSeries<_PieData, String>>[
+                    PieSeries<_PieData, String>(
+                        explodeOffset: '5',
+                        animationDuration: 900,
+                        explode: true,
+                        explodeIndex: 0,
+                        dataSource: listStocks,
+                        xValueMapper: (_PieData data, _) => data.xData,
+                        yValueMapper: (_PieData data, _) => data.yData,
+                        dataLabelMapper: (_PieData data, _) => data.text,
+                        dataLabelSettings: DataLabelSettings(isVisible: true)),
+                  ],
+                )
+              : const SizedBox(
+                  height: 50, width: 50, child: CircularProgressIndicator()),
         ),
       ),
     );

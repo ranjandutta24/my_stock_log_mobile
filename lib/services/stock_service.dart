@@ -23,6 +23,23 @@ getStock(body) async {
   }
 }
 
+getCurrentStock(body) async {
+  try {
+    return await http.get(
+      Uri.parse('$baseURL/stocks/currentstock'),
+      headers: {'Content-Type': 'application/json', 'x-auth-token': body},
+    );
+  } catch (error) {
+    SnackBar(
+      duration: const Duration(seconds: 3),
+      content: const Center(
+        child: Text('api call error'),
+      ),
+      action: SnackBarAction(label: '', onPressed: () {}),
+    );
+  }
+}
+
 addStock(body, token) async {
   return await http.post(Uri.parse('$baseURL/stocks/'),
       headers: {'Content-Type': 'application/json', 'x-auth-token': token},
