@@ -14,6 +14,14 @@ userlogin(body) async {
       body: body);
 }
 
+userRegister(body) async {
+  return await http.post(Uri.parse('$baseURL/users'),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: body);
+}
+
 // /users/me
 
 me(body) async {

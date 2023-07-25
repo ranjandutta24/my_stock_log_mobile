@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:my_stock_log/screens/landing.dart';
+import 'package:my_stock_log/screens/register.dart';
 import 'package:my_stock_log/services/user_service.dart';
 import 'package:my_stock_log/widgets/TextField.dart';
 
@@ -114,6 +115,7 @@ class _LoginState extends State<Login> {
                     color: const Color.fromARGB(159, 255, 255, 255),
                     label: 'User Id',
                     controller: userId,
+                    icon: Icons.person,
                   ),
                   const SizedBox(
                     height: 14,
@@ -144,10 +146,33 @@ class _LoginState extends State<Login> {
                             child: const Text(
                               'Log In',
                               style: TextStyle(
-                                  color: Color.fromARGB(255, 42, 125, 219)),
+                                  color: Color.fromARGB(255, 42, 125, 219),
+                                  fontSize: 17),
                             ),
                           ),
                         ),
+                  Row(
+                    children: [
+                      TextButton(
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (ctx) => const Register(),
+                              ),
+                            );
+                          },
+                          child: const Text('Click here',
+                              style: TextStyle(
+                                fontSize: 17,
+                              ))),
+                      const Text(
+                        'to register',
+                        style: TextStyle(
+                            color: Color.fromARGB(255, 31, 60, 133),
+                            fontSize: 17),
+                      )
+                    ],
+                  )
                 ],
               ),
             ),

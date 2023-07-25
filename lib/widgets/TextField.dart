@@ -6,7 +6,8 @@ class CustomTextField extends StatelessWidget {
       {super.key,
       required this.color,
       required this.label,
-      required this.controller});
+      required this.controller,
+      required this.icon});
 
   // ignore: prefer_typing_uninitialized_variables
   final color;
@@ -14,6 +15,7 @@ class CustomTextField extends StatelessWidget {
   final label;
   // ignore: prefer_typing_uninitialized_variables
   final controller;
+  final icon;
   @override
   Widget build(BuildContext context) {
     var _obscureText = false;
@@ -26,7 +28,7 @@ class CustomTextField extends StatelessWidget {
         // You can add more validation logic here if needed
         return null;
       },
-      style: const TextStyle(color: Colors.white),
+      style: const TextStyle(color: Colors.white, fontSize: 17),
       decoration: InputDecoration(
         focusedBorder: OutlineInputBorder(
           borderSide:
@@ -39,7 +41,7 @@ class CustomTextField extends StatelessWidget {
           ),
         ),
         prefixIcon: Icon(
-          Icons.person,
+          icon,
           color: color,
         ),
         filled: true,

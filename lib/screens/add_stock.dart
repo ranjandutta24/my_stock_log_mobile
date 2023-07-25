@@ -20,7 +20,7 @@ class _NewItemState extends State<NewItem> {
   final _formKey = GlobalKey<FormState>();
   var _enteredName = '';
   var _enteredQuantity = 1;
-  var _enteredPrice = 0;
+  double _enteredPrice = 0;
   DateTime? _selectedDate;
   String _selectedValue = 'Buy';
   var newStock = {};
@@ -138,7 +138,8 @@ class _NewItemState extends State<NewItem> {
   @override
   void initState() {
     super.initState();
-    options = widget.name;
+    options = widget.name.toSet().toList();
+    print(options);
   }
 
   @override
@@ -248,14 +249,14 @@ class _NewItemState extends State<NewItem> {
                         validator: (value) {
                           if (value == null ||
                               value.isEmpty ||
-                              int.tryParse(value) == null ||
-                              int.tryParse(value)! <= 0) {
+                              double.tryParse(value) == null ||
+                              double.tryParse(value)! <= 0) {
                             return 'Must be a valid positive number.';
                           }
                           return null;
                         },
                         onSaved: (value) {
-                          _enteredPrice = int.parse(value!);
+                          _enteredPrice = double.parse(value!);
                         },
                       ),
                     ),
