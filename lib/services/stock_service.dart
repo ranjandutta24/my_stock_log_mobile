@@ -6,10 +6,12 @@ import 'package:flutter/material.dart';
 
 var baseURL = 'https://busy-bee-poncho.cyclic.app/api/';
 
-getStock(body) async {
+getStock(body, params) async {
   try {
     return await http.get(
-      Uri.parse('$baseURL/stocks'),
+      params == null
+          ? Uri.parse('$baseURL/stocks')
+          : Uri.parse('$baseURL/stocks').replace(queryParameters: params),
       headers: {'Content-Type': 'application/json', 'x-auth-token': body},
     );
   } catch (error) {

@@ -245,14 +245,16 @@ class _TabularScreenState extends State<TabularScreen> {
                                     // Text(stock['name']),
                                     GestureDetector(
                                       onTap: () {
-                                        var specificStock = stockList.where(
-                                            (element) =>
+                                        var specificStock = stockList
+                                            .where((element) =>
                                                 element['name'] ==
-                                                stock['name']);
-                                        print(specificStock);
+                                                stock['name'])
+                                            .toList();
+                                        // print(specificStock);
                                         Navigator.of(context).push(
                                           MaterialPageRoute(
                                             builder: (ctx) => StockStack(
+                                              token: widget.token,
                                               stock: specificStock,
                                             ),
                                           ),

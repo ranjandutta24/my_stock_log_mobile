@@ -2,7 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:my_stock_log/screens/add_stock.dart';
-import 'package:my_stock_log/services/user_service.dart';
+import 'package:my_stock_log/services/stock_service.dart';
+// import 'package:my_stock_log/services/user_service.dart';
 import 'package:my_stock_log/widgets/log_inkwell.dart';
 
 class StockLog extends StatefulWidget {
@@ -24,14 +25,14 @@ class _StockLogState extends State<StockLog> {
   List<String> stockName = [];
   bool show = false;
   getAllStock() async {
-    var response = await getStock(widget.token);
+    var response = await getStock(widget.token, null);
     if (response.statusCode == 200) {
       setState(() {
         stockList = json.decode(response.body);
         show = true;
       });
       stockName = stockList.map((item) => item['name'].toString()).toList();
-      print(stockName);
+      // print(stockName);
     } else {}
   }
 

@@ -21,7 +21,7 @@ class _ChartScreenState extends State<ChartScreen> {
   Map<String, double> dataMap = {};
   List<_PieData> listStocks = [];
   getAllStock() async {
-    var response = await getStock(widget.token);
+    var response = await getStock(widget.token, null);
     if (response.statusCode == 200) {
       setState(() {
         stockList = json.decode(response.body);
