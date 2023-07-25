@@ -155,10 +155,11 @@ class _LoginState extends State<Login> {
                     children: [
                       TextButton(
                           onPressed: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (ctx) => const Register(),
-                              ),
+                            Navigator.replace(
+                              context,
+                              oldRoute: ModalRoute.of(context)!,
+                              newRoute: MaterialPageRoute(
+                                  builder: (context) => const Register()),
                             );
                           },
                           child: const Text('Click here',

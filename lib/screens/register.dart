@@ -44,10 +44,10 @@ class _RegisterScreenState extends State<Register> {
           ),
         );
 
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (ctx) => const Login(),
-          ),
+        Navigator.replace(
+          context,
+          oldRoute: ModalRoute.of(context)!,
+          newRoute: MaterialPageRoute(builder: (context) => const Login()),
         );
       } else {
         // ignore: use_build_context_synchronously
@@ -163,10 +163,11 @@ class _RegisterScreenState extends State<Register> {
                     children: [
                       TextButton(
                           onPressed: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (ctx) => const Login(),
-                              ),
+                            Navigator.replace(
+                              context,
+                              oldRoute: ModalRoute.of(context)!,
+                              newRoute: MaterialPageRoute(
+                                  builder: (context) => const Login()),
                             );
                           },
                           child: const Text('Click here',
