@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:my_stock_log/screens/stock_log.dart';
+import 'package:my_stock_log/screens/strock_stack.dart';
 
 import '../services/stock_service.dart';
 
@@ -69,7 +70,7 @@ class _TabularScreenState extends State<TabularScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Material(
-                  borderRadius: BorderRadius.circular(5),
+                  borderRadius: BorderRadius.circular(7),
                   elevation: 3,
                   child: InkWell(
                     splashColor: const Color.fromARGB(255, 255, 255, 255),
@@ -82,9 +83,14 @@ class _TabularScreenState extends State<TabularScreen> {
                         ),
                       );
                     },
+                    borderRadius: BorderRadius.circular(7),
                     child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(7),
+                        color: const Color.fromARGB(66, 167, 167, 167),
+                      ),
                       padding: const EdgeInsets.only(top: 10),
-                      color: const Color.fromARGB(66, 167, 167, 167),
+                      // color: const Color.fromARGB(66, 167, 167, 167),
                       height: 50,
                       width: 70,
                       child: Column(
@@ -106,14 +112,19 @@ class _TabularScreenState extends State<TabularScreen> {
                   ),
                 ),
                 Material(
-                  borderRadius: BorderRadius.circular(5),
+                  borderRadius: BorderRadius.circular(7),
                   elevation: 3,
                   child: InkWell(
                     splashColor: const Color.fromARGB(255, 154, 154, 154),
                     onTap: () {},
+                    borderRadius: BorderRadius.circular(7),
                     child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(7),
+                        color: const Color.fromARGB(66, 167, 167, 167),
+                      ),
                       padding: const EdgeInsets.only(top: 10),
-                      color: const Color.fromARGB(66, 167, 167, 167),
+                      // color: const Color.fromARGB(66, 167, 167, 167),
                       height: 50,
                       width: 70,
                       child: Column(
@@ -232,36 +243,53 @@ class _TabularScreenState extends State<TabularScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     // Text(stock['name']),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Expanded(
-                                          flex: 4,
-                                          child: Text(stock['name']),
-                                        ),
-                                        Expanded(
-                                          flex: 2,
-                                          child: Text(
-                                              stock['quantity'].toString()),
-                                        ),
-                                        Expanded(
-                                          flex: 3,
-                                          child: Text(
-                                            stock['total']
-                                                .toStringAsFixed(2)
-                                                .toString(),
+                                    GestureDetector(
+                                      onTap: () {
+                                        var specificStock = stockList.where(
+                                            (element) =>
+                                                element['name'] ==
+                                                stock['name']);
+                                        print(specificStock);
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (ctx) => StockStack(
+                                              stock: specificStock,
+                                            ),
                                           ),
-                                        ),
-                                        Expanded(
-                                          flex: 2,
-                                          child: Text(
-                                            (stock['total'] / stock['quantity'])
-                                                .toStringAsFixed(2)
-                                                .toString(),
+                                        );
+                                      },
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Expanded(
+                                            flex: 4,
+                                            child: Text(stock['name']),
                                           ),
-                                        ),
-                                      ],
+                                          Expanded(
+                                            flex: 2,
+                                            child: Text(
+                                                stock['quantity'].toString()),
+                                          ),
+                                          Expanded(
+                                            flex: 3,
+                                            child: Text(
+                                              stock['total']
+                                                  .toStringAsFixed(2)
+                                                  .toString(),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            flex: 2,
+                                            child: Text(
+                                              (stock['total'] /
+                                                      stock['quantity'])
+                                                  .toStringAsFixed(2)
+                                                  .toString(),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ],
                                 ),
