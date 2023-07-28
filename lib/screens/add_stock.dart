@@ -61,9 +61,10 @@ class _NewItemState extends State<NewItem> {
             }),
             widget.token);
         if (response.statusCode == 200) {
-          print(response.body);
+          // print(response.body);
           newStock = json.decode(response.body);
         } else {
+          // ignore: use_build_context_synchronously
           ScaffoldMessenger.of(context).clearSnackBars();
           // ignore: use_build_context_synchronously
           ScaffoldMessenger.of(context).showSnackBar(
@@ -139,7 +140,7 @@ class _NewItemState extends State<NewItem> {
   void initState() {
     super.initState();
     options = widget.name.toSet().toList();
-    print(options);
+    // print(options);
   }
 
   @override
@@ -270,7 +271,7 @@ class _NewItemState extends State<NewItem> {
                   children: [
                     Expanded(
                       child: RadioListTile<String>(
-                        title: Text('Buy'),
+                        title: const Text('Buy'),
                         value: 'Buy',
                         groupValue: _selectedValue,
                         onChanged: (value) {
@@ -282,7 +283,7 @@ class _NewItemState extends State<NewItem> {
                     ),
                     Expanded(
                       child: RadioListTile<String>(
-                        title: Text('Sell'),
+                        title: const Text('Sell'),
                         value: 'Sell',
                         groupValue: _selectedValue,
                         onChanged: (value) {

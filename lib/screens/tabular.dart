@@ -30,13 +30,12 @@ class _TabularScreenState extends State<TabularScreen> {
         load = false;
       });
 
-      print(stockList);
+      // print(stockList);
     } else {}
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     currentStock();
   }

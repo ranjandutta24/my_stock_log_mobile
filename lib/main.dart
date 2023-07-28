@@ -27,7 +27,7 @@ void main() {
       ),
     ),
     theme: ThemeData().copyWith(
-      inputDecorationTheme: InputDecorationTheme(
+      inputDecorationTheme: const InputDecorationTheme(
         errorStyle: TextStyle(
           color: Color.fromARGB(255, 117, 5, 5),
         ),

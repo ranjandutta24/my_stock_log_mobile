@@ -31,7 +31,8 @@ class _RegisterScreenState extends State<Register> {
       );
 
       if (response.statusCode == 200) {
-        print(response.body);
+        // print(response.body);
+        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).clearSnackBars();
         // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
@@ -44,8 +45,10 @@ class _RegisterScreenState extends State<Register> {
           ),
         );
 
+        // ignore: use_build_context_synchronously
         Navigator.replace(
           context,
+          // ignore: use_build_context_synchronously
           oldRoute: ModalRoute.of(context)!,
           newRoute: MaterialPageRoute(builder: (context) => const Login()),
         );

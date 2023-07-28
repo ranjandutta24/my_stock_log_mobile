@@ -6,8 +6,8 @@ import 'package:my_stock_log/widgets/log_inkwell.dart';
 
 class StockStack extends StatefulWidget {
   const StockStack({super.key, required this.stock, required this.token});
-  final stock;
-  final token;
+  final dynamic stock;
+  final String token;
   @override
   State<StockStack> createState() {
     return _StockStackScreenState();
@@ -19,14 +19,14 @@ class _StockStackScreenState extends State<StockStack> {
   bool show = false;
   // call search api
   getAllStock() async {
-    print('object');
+    // print('object');
     var response =
         await getStock(widget.token, {'name': widget.stock[0]['name']});
     if (response.statusCode == 200) {
       setState(() {
         stockList = json.decode(response.body);
         show = true;
-        print(stockList);
+        // print(stockList);
       });
       // stockName = stockList.map((item) => item['name'].toString()).toList();
       // print(stockName);
@@ -42,7 +42,7 @@ class _StockStackScreenState extends State<StockStack> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.stock);
+    // print(widget.stock);
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(

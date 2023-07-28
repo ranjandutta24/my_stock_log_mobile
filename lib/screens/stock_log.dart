@@ -46,7 +46,7 @@ class _StockLogState extends State<StockLog> {
         ),
       ),
     );
-    print(newItem);
+    // print(newItem);
 
     if (newItem == null) {
       return;
@@ -63,7 +63,7 @@ class _StockLogState extends State<StockLog> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Stock Log'),
+          title: const Text('Stock Log'),
           actions: [
             IconButton(
               onPressed: _addItem,
@@ -71,7 +71,7 @@ class _StockLogState extends State<StockLog> {
             )
           ],
         ),
-        backgroundColor: Color.fromARGB(255, 255, 255, 255),
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
         body: show == true
             ? SingleChildScrollView(
                 child: Padding(

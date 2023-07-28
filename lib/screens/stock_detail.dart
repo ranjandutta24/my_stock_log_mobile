@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:my_stock_log/services/stock_service.dart';
+// ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
 
 final formatter = DateFormat.yMd();
 
 class StockDetail extends StatefulWidget {
   const StockDetail({super.key, required this.stock, required this.token});
-  final stock;
-  final token;
+  final dynamic stock;
+  final String token;
 
   @override
   State<StockDetail> createState() => _StockDetailState();
@@ -17,8 +18,9 @@ class _StockDetailState extends State<StockDetail> {
   deleteOneStock() async {
     var response = await deleteStock(widget.stock['_id'], widget.token);
     if (response.statusCode == 200) {
-      print(response.body);
+      // print(response.body);
 
+      // ignore: use_build_context_synchronously
       Navigator.of(context).pop();
       setState(() {
         // stockList = json.decode(response.body);
@@ -82,17 +84,17 @@ class _StockDetailState extends State<StockDetail> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        widget.stock['quantity'].toString() + ' x',
+                        '${widget.stock['quantity']} x',
                         style: const TextStyle(
                             fontSize: 19, fontWeight: FontWeight.w400),
                       ),
                       Text(
-                        widget.stock['price'].toString() + " ₹",
+                        "${widget.stock['price']} ₹",
                         style: const TextStyle(
                             fontSize: 19, fontWeight: FontWeight.w400),
                       ),
                       Text(
-                        " = " + widget.stock['total'].toString() + " ₹",
+                        " = ${widget.stock['total']} ₹",
                         style: const TextStyle(
                             fontSize: 19, fontWeight: FontWeight.w400),
                       ),
